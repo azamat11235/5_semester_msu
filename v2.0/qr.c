@@ -1,5 +1,5 @@
 #include <cblas.h>
-#include math.h
+#include <math.h>
 #include "qr.h"
 
 void compute_params(double aii, double aji, double* c, double* s) {
