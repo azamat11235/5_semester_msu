@@ -16,8 +16,8 @@ void qr(double* a, double* q, int n) {
             for (int k = j; k < n; ++k) {
                 double ajk = a[j*n + k];
                 double aik = a[i*n + k];
-                a[j*n + k] = aik*c - ajk*s;
-                a[i*n + k] = aik*s + ajk*c;
+                a[j*n + k] = ajk*c - aik*s;
+                a[i*n + k] = ajk*s + aik*c;
             }
         }
     }
