@@ -2,12 +2,6 @@
 #include <math.h>
 #include "qr.h"
 
-
-void rotate(double* xi, double* xj, double c, double s) {
-    double xi_ = (*xi)*c - (*xj)*s;
-    double xj_ = (*xi)*s + (*xj)*c;
-    *xi = xi_;
-    *xj = xj_;
     
 void qr(double* a, double* q, int n) {
     for (int j = 0; j < n - 1; ++j) {
