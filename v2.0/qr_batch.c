@@ -3,6 +3,21 @@
 #include "qr_batch.h"
 #include "parameters.h"
 
+typedef void qr_func_type(double*, double*, int);
+typedef void restore_q_func_type(double*, double*, int);
+
+void compute_params(double aii, double aji, double* c, double* s) {
+    *c = aii / sqrt(aii * aii + aji * aji);
+    *s = -aji / sqrt(aii * aii + aji * aji);
+}
+
+void rotate(double* xi, double* xj, double c, double s) {
+    double xi_ = (*xi) * c - (*xj) * s;
+    double xj_ = (*xi) * s + (*xj) * c;
+    *xi = xi_;
+    *xj = xj_;
+}
+
 void bcache(double* a, int na, double* cache, int i, int j, int k) {
     for (int ii = 0; ii < _b; ++ii) {
             int row_abs = i + ii;
@@ -108,10 +123,11 @@ void qr_batch(double* a, double* q, int n) {
                 }
                 bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
             }
-            bflush(a, n, cache, jb, jb2, 2); // внедиаг. блок
+            bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
         }
     }
  }
+
 
 void restore_q_batch(double* q, double* restored_q, int n) {
     for (int i = 0; i < n; ++i)
