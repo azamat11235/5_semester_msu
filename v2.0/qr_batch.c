@@ -1,5 +1,4 @@
 #include <math.h>
-#include "qr.h"
 #include "qr_batch.h"
 #include "parameters.h"
 
