@@ -2,13 +2,13 @@
 #include "qr_cblas.h"
 
 void qr_cblas(double* a, double* q, int n) {
-    for (int icol = 0; icol < n - 1; ++icol) {
-      for (int irow = icol + 1; irow < n; ++irow) {
+    for (int j = 0; j < n - 1; ++j) {
+      for (int i = j + 1; i < n; ++i) {
           double c;
           double s;
-          cblas_drotg(&a[n * icol + icol], &a[n * irow + icol], &c, &s);
-          a[n * irow + icol] = 0;
-          cblas_drot(n-icol-1, &a[icol*n + icol+1], 1, &a[irow*n + icol+1], 1, c, s);
+          cblas_drotg(&a[n * j + j], &a[n * i + j], &c, &s);
+          a[n * i + j] = 0;
+          cblas_drot(n-j-1, &a[j*n + j+1], 1, &a[i*n + j+1], 1, c, s);
           q[n*i + j] = c;
           q[n*j + i] = -s;
       }
