@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "qr.h"
 /*
+#include "qr.h"
 #include "qr_batch.h"
 #include "qr_cblas.h"
 #include "qr_lapack.h"
@@ -15,6 +15,18 @@
 
 typedef void qr_func_type(double*, double*, int);
 typedef void restore_q_func_type(double*, double*, int);
+
+void compute_params(double aii, double aji, double* c, double* s) {
+    *c = aii / sqrt(aii * aii + aji * aji);
+    *s = -aji / sqrt(aii * aii + aji * aji);
+}
+
+void rotate(double* xi, double* xj, double c, double s) {
+    double xi_ = (*xi) * c - (*xj) * s;
+    double xj_ = (*xi) * s + (*xj) * c;
+    *xi = xi_;
+    *xj = xj_;
+}
 
 void bcache(double* a, int na, double* cache, int i, int j, int k) {
     for (int ii = 0; ii < _b; ++ii) {
@@ -36,7 +48,7 @@ void bflush(double* a, int na, double* cache, int i, int j, int k) {
         }
 }
 
-void qr_batch(double* a, double* q, int n) {
+void qr(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
@@ -121,10 +133,11 @@ void qr_batch(double* a, double* q, int n) {
                 }
                 bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
             }
-            bflush(a, n, cache, jb, jb2, 2); // внедиаг. блок
+            bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
         }
     }
  }
+
 double compute_time(qr_func_type* qr_func, int size) {
     const int num_of_iters = 5;
     double t = 0;
@@ -148,7 +161,7 @@ double compute_time(qr_func_type* qr_func, int size) {
 
 int main(int argv, char** argc) {
     for (int n = 256; n <= 2048; n *= 2)
-        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr_batch, n));
+        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr, n));
     /*
     printf("-------------------------------------------\n");
     printf("tests:\n");
