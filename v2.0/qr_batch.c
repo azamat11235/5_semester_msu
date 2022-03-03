@@ -2,9 +2,6 @@
 #include "qr_batch.h"
 #include "parameters.h"
 
-typedef void qr_func_type(double*, double*, int);
-typedef void restore_q_func_type(double*, double*, int);
-
 void compute_params(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii*aii + aji*aji);
     *s = -aji / sqrt(aii*aii + aji*aji);
