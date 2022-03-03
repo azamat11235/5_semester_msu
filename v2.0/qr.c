@@ -32,11 +32,10 @@ void restore_q(double* q, double* restored_q, int n) {
             double c = q[i*n + j];
             double s = -q[j*n + i];
             for (int k = j; k < n; ++k) {
-                //double qjk = restored_q[j*n + k];
-                //double qik = restored_q[i*n + k];
-                //restored_q[j*n + k] = qik*c - qjk*s;
-                //restored_q[i*n + k] = qik*s + qjk*c;
-                rotate(&restored_q[j*n + k], &restored_q[i*n + k], c, s);
+                double qjk = restored_q[j*n + k];
+                double qik = restored_q[i*n + k];
+                restored_q[j*n + k] = qjk*c - qik*s;
+                restored_q[i*n + k] = qjk*s + qik*c;
             }
         }
     }
