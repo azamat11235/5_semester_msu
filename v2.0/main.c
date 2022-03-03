@@ -7,12 +7,13 @@
 
 int main(int argv, char** argc) {
     printf("-------------------------------------------\n");
+    printf("tests:\n");
     if (test(&qr, &restore_q) == 0)
-        printf("qr: all tests passed!\n");
+        printf("qr: OK!\n");
     if (test(&qr_cblas, &restore_q) == 0)
-        printf("qr_cblas: all tests passed!\n");
+        printf("qr_cblas: OK!\n");
     if (test(&qr_batch, &restore_q_batch) == 0)
-        printf("qr_batch: all tests passed!\n");
+        printf("qr_batch: OK!\n");
     printf("-------------------------------------------\n");
 
     for (int n = 256; n <= 2048; n *= 2)
