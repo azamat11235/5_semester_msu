@@ -1,4 +1,4 @@
-qr.c         - наивная реализаци алгоритма
+qr.c         - наивная реализация алгоритма
 
 qr_batches.c - блочная версия
 
@@ -6,4 +6,4 @@ qr_cblas.c   - CBLAS
 
 qr_lapack.c  - LAPACK
 
-results.txt  - результат работы
+results.txt  - сравнение функций
