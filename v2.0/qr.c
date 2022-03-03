@@ -10,7 +10,7 @@ void qr(double* a, double* q, int n) {
             double s;
             compute_params(a[j*n + j], a[i*n + j], &c, &s);
             q[i*n + j] = c;
-            q[j*n + i] = s;
+            q[j*n + i] = -s;
             for (int k = j; k < n; ++k)
                 rotate(&a[j*n + k], &a[i*n + k], c, s);
         }
