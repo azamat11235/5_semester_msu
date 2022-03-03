@@ -1,33 +1,10 @@
 #include <stdio.h>
-//#include "qr.h"
+#include "qr.h"
 #include "qr_batch.h"
-/*
 #include "qr_cblas.h"
 #include "qr_lapack.h"
 #include "debug.h"
-*/
-#include "routine.h"
 
-#include <math.h>
-/////
-void compute_params(double aii, double aji, double* c, double* s) {
-    *c = aii / sqrt(aii*aii + aji*aji);
-    *s = -aji / sqrt(aii*aii + aji*aji);
-}
-
-void rotate(double* xi, double* xj, double c, double s) {
-    double xi_ = (*xi)*c - (*xj)*s;
-    double xj_ = (*xi)*s + (*xj)*c;
-    *xi = xi_;
-    *xj = xj_;
-}
-/////
-
-int main() {
-    double* a;
-    printf("%f\n", compute_time(qr_batch, 1024)); 
-}
-/*
 int main(int argv, char** argc) {
     printf("-------------------------------------------\n");
     printf("tests:\n");
@@ -54,4 +31,3 @@ int main(int argv, char** argc) {
         
     return 0;
 }
-*/
