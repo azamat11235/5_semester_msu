@@ -43,7 +43,7 @@ double compute_time(qr_func_type* qr_func, int size) {
 
 int main(int argv, char** argc) {
     for (int n = 256; n <= 2048; n *= 2)
-        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr_batch, n));
+        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr, n));
     /*
     printf("-------------------------------------------\n");
     printf("tests:\n");
