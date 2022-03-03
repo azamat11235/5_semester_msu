@@ -7,6 +7,8 @@
 #include "debug.h"
 */
 
+//#include "qr_batch.h"
+
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
@@ -49,7 +51,7 @@ void bflush(double* a, int na, double* cache, int i, int j, int k) {
         }
 }
 
-void qr(double* a, double* q, int n) {
+void qr_batch(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
@@ -162,7 +164,7 @@ double compute_time(qr_func_type* qr_func, int size) {
 
 int main(int argv, char** argc) {
     for (int n = 256; n <= 2048; n *= 2)
-        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr, n));
+        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr_batch, n));
     /*
     printf("-------------------------------------------\n");
     printf("tests:\n");
