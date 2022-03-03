@@ -129,7 +129,7 @@ void restore_q(double* q, double* restored_q, int n) {
                     int col_abs = jb - j;
                     if (row_abs > col_abs) {
                         double c = q[row_abs*n + col_abs];
-                        double s = -q[col_abs*n + row_abs];
+                        double s = q[col_abs*n + row_abs];
                         for (int k = 0; k < n; ++k)
                             rotate(&restored_q[col_abs*n + k], &restored_q[row_abs*n + k], c, s);
                     }
