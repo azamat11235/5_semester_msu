@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include "qr.h"
 #include "qr_batch.h"
+/*
 #include "qr_cblas.h"
 #include "qr_lapack.h"
 #include "debug.h"
-
+*/
 #include "routine.h"
 
 int main() {
