@@ -8,11 +8,11 @@ void qr(double* a, double* q, int n) {
         for (int i = j + 1; i < n; ++i) {
             double c;
             double s;
-            compute_params(a[n*j + j], a[n*i + j], &c, &s);
-            q[n*i + j] = c;
-            q[n*j + i] = -s;
+            compute_params(a[j*n + j], a[i*n + j], &c, &s);
+            q[i*n + j] = c;
+            q[j*n + i] = s;
             for (int k = j; k < n; ++k)
-                rotate(&a[n*j + k], &a[n*i + k], c, s);
+                rotate(&a[j*n + k], &a[i*n + k], c, s);
         }
     }
 }
@@ -20,7 +20,7 @@ void qr(double* a, double* q, int n) {
 void restore_q(double* q, double* restored_q, int n) {
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j)
-            restored_q[n * i + j] = (double)(i == j);
+            restored_q[i*n + j] = (double)(i == j);
     for (int j = n-2; j >= 0; --j) {
         for (int i = n-1; i > j; --i) {
             double c = q[i*n + j];
