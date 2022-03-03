@@ -68,13 +68,13 @@ void qr(double* a, double* q, int n) {
                     double aij = cache[3*_b*_b + i*_b + j];
                     double c;
                     double s;
-                    compute_params(ajj, aij, &c, &s);
+                    cblas_drotg(&ajj, &aij, &c, &s);
                     cache[i*_b + j] = c;
                     cache[_b*_b + j*_b + i] = s;
                     for (int k = j; k < _b; ++k) {
                        int jk = 2*_b*_b + j*_b + k;
                        int ik = 3*_b*_b + i*_b + k;
-                       rotate(&cache[jk], &cache[ik], c, s);
+                       cblas_drot(_b-j, &cache[jk], 1, &cache[ik], 1, c, s);
                     }
                 }
             }
