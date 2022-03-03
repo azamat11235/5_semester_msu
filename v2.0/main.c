@@ -8,6 +8,8 @@
 */
 
 #include <time.h>
+#include <stdlib.h>
+#include <string.h>
 #include "routine.h"
 #include "parameters.h"
 
