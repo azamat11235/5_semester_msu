@@ -1,18 +1,7 @@
 #include <math.h>
+#include <qr.h>
 #include "qr_batch.h"
 #include "parameters.h"
-
-void compute_params(double aii, double aji, double* c, double* s) {
-    *c = aii / sqrt(aii * aii + aji * aji);
-    *s = -aji / sqrt(aii * aii + aji * aji);
-}
-
-void rotate(double* xi, double* xj, double c, double s) {
-    double xi_ = (*xi) * c - (*xj) * s;
-    double xj_ = (*xi) * s + (*xj) * c;
-    *xi = xi_;
-    *xj = xj_;
-}
 
 void bcache(double* a, int na, double* cache, int i, int j, int k) {
     for (int ii = 0; ii < _b; ++ii) {
