@@ -8,7 +8,7 @@
 */
 
 #include <time.h>
-#inlcude "routine.h"
+#include "routine.h"
 #include "parameters.h"
 
 typedef void qr_func_type(double*, double*, int);
