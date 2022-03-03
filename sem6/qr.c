@@ -53,7 +53,6 @@ void qr(double* a, double* q, int n) {
                 cache[i*_b + j] = c;
                 cache[j*_b + i] = s;
                 cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
-               cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, -s);//
             }
         }
         bflush(q, n, cache, jb, jb, 0); // sin, cos
@@ -72,7 +71,6 @@ void qr(double* a, double* q, int n) {
                     cache[i*_b + j] = c;
                     cache[j*_b + i] = s;
                     cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
-                   cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, -s);//
                 }
             }
             bflush(q, n, cache, ib, jb, 0); // cos
@@ -94,7 +92,6 @@ void qr(double* a, double* q, int n) {
                     int jrow = 2*_b*_b + j*_b;
                     int irow = 2*_b*_b + i*_b;
                     cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
-                   cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, -s);/////
                 }
             }
             // вращения поддиаг. блоков
@@ -111,7 +108,6 @@ void qr(double* a, double* q, int n) {
                         int jrow = 2*_b*_b + j*_b;
                         int irow = 3*_b*_b + i*_b;
                         cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
-                       cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, -s);/////
                     }
                 }
                 bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
