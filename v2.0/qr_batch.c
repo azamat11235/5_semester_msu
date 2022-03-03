@@ -23,7 +23,7 @@ void bflush(double* a, int na, double* cache, int i, int j, int k) {
         }
 }
 
-void qr(double* a, double* q, int n) {
+void qr_batch(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
