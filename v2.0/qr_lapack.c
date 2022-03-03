@@ -1,3 +1,4 @@
+#include <lapacke.h>
 #include "qr_lapack.h"
 
 void qr_lapack(double* a, double* tau, int n) {
