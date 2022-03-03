@@ -7,7 +7,7 @@
 #include "debug.h"
 */
 
-
+#include <time.h>
 #include "parameters.h"
 
 typedef void qr_func_type(double*, double*, int);
