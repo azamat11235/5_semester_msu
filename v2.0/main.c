@@ -12,7 +12,7 @@ int main(int argv, char** argc) {
     if (test(&qr_cblas, &restore_q) == 0)
         printf("qr_cblas: all tests passed!\n");
     if (test(&qr_batch, &restore_q_batch) == 0)
-        printf("qr_batches: all tests passed!\n");
+        printf("qr_batch: all tests passed!\n");
     printf("-------------------------------------------\n");
 
     for (int n = 256; n <= 2048; n *= 2)
