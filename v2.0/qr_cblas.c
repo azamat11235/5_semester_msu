@@ -1,6 +1,7 @@
 #include <cblas.h>
 #include "qr_cblas.h"
 
+
 void qr_cblas(double* a, double* q, int n) {
     for (int j = 0; j < n - 1; ++j) {
       for (int i = j + 1; i < n; ++i) {
