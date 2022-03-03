@@ -23,7 +23,7 @@ int main(int argv, char** argc) {
         printf("size = %4d, time (qr_cblas):   %f s.\n", n, compute_time(&qr_cblas, n));
     printf("-------------------------------\n");
     for (int n = 256; n <= 2048; n *= 2)
-        printf("size = %4d, time (qr_batches): %f s.\n", n,  compute_time(&qr_batch, n));
+        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr_batch, n));
     printf("-------------------------------\n");  
     for (int n = 256; n <= 2048; n *= 2)
         printf("size = %4d, time (qr):         %f s.\n", n,  compute_time(&qr, n));
