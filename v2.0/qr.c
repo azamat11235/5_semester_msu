@@ -25,7 +25,8 @@ void restore_q(double* q, double* restored_q, int n) {
         for (int i = n-1; i > j; --i) {
             double c = q[i*n + j];
             double s = q[j*n + i];
-            cblas_drot(n-i, &restored_q[j*n + j], 1, &restored_q[i*n + j], 1, c, s);
+            for (int k = j; k < n; ++k)
+                rotate(&restored_q[j*n + k], &restored_q[i*n + k], c, s);
         }
     }
 }
