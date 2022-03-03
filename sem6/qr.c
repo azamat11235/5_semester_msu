@@ -43,19 +43,16 @@ void qr(double* a, double* q, int n) {
         // вращаем диаг. блок
         for (int j = 0; j < _b-1; ++j) {
             for (int i = j+1; i < _b; ++i) {
-                double ajj = cache[2*_b*_b + j*_b + j];
-                double aij = cache[2*_b*_b + i*_b + j];
+                int jj = 2*_b*_b + j*_b + j;
+                int ij = 2*_b*_b + i*_b + j;
+                double ajj = cache[jj];
+                double aij = cache[ij];
                 double c;
                 double s;
                 cblas_drotg(&ajj, &aij, &c, &s);
                 cache[i*_b + j] = c;
                 cache[j*_b + i] = s;
-                for (int k = j; k < _b; ++k) {
-                    int jk = 2*_b*_b + j*_b + k;
-                    int ik = 2*_b*_b + i*_b + k;
-                    cblas_drot(_b-j, &cache[jk], 1, &cache[ik], 1, c, s);
-                }
-
+                cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
             }
         }
         bflush(q, n, cache, jb, jb, 0); // sin, cos
@@ -64,18 +61,16 @@ void qr(double* a, double* q, int n) {
             bcache(a, n, cache, ib, jb, 3); // поддиаг. блок
             for (int j = 0; j < _b; ++j) {
                 for (int i = 0; i < _b; ++i) {
-                    double ajj = cache[2*_b*_b + j*_b + j];
-                    double aij = cache[3*_b*_b + i*_b + j];
+                    int jj = 2*_b*_b + j*_b + j;
+                    int ij = 3*_b*_b + i*_b + j;
+                    double ajj = cache[jj];
+                    double aij = cache[ij];
                     double c;
                     double s;
                     cblas_drotg(&ajj, &aij, &c, &s);
                     cache[i*_b + j] = c;
-                    cache[_b*_b + j*_b + i] = s;
-                    for (int k = j; k < _b; ++k) {
-                       int jk = 2*_b*_b + j*_b + k;
-                       int ik = 3*_b*_b + i*_b + k;
-                       cblas_drot(_b-j, &cache[jk], 1, &cache[ik], 1, c, s);
-                    }
+                    cache[j*_b + i] = s;
+                    cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
                 }
             }
             bflush(q, n, cache, ib, jb, 0); // cos
