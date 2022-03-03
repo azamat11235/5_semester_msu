@@ -2,6 +2,7 @@
 #include "qr_batch.h"
 #include "parameters.h"
 
+
 void compute_params(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii*aii + aji*aji);
     *s = -aji / sqrt(aii*aii + aji*aji);
