@@ -5,6 +5,13 @@
 #include "qr_lapack.h"
 #include "debug.h"
 
+#include "routine.h"
+
+int main() {
+    double* a;
+    printf("%f\n", compute_time(qr_batch, 1024)); 
+}
+/*
 int main(int argv, char** argc) {
     printf("-------------------------------------------\n");
     printf("tests:\n");
@@ -31,3 +38,4 @@ int main(int argv, char** argc) {
         
     return 0;
 }
+*/
