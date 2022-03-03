@@ -60,8 +60,8 @@ void qr(double* a, double* q, int n) {
         for (int ib = jb+_b; ib < n; ib += _b) {
             bcache(a, n, cache, ib, jb, 3); // поддиаг. блок
             for (int j = 0; j < _b; ++j) {
+                int jj = 2*_b*_b + j*_b + j;
                 for (int i = 0; i < _b; ++i) {
-                    int jj = 2*_b*_b + j*_b + j;
                     int ij = 3*_b*_b + i*_b + j;
                     double ajj = cache[jj];
                     double aij = cache[ij];
