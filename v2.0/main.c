@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "qr.h"
+//#include "qr.h"
 #include "qr_batch.h"
 /*
 #include "qr_cblas.h"
