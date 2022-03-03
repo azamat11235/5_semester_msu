@@ -51,7 +51,7 @@ void qr(double* a, double* q, int n) {
                 double s;
                 cblas_drotg(&ajj, &aij, &c, &s);
                 cache[i*_b + j] = c;
-                cache[j*_b + i] = s;
+                cache[j*_b + i] = -s;
                 cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
             }
         }
@@ -69,7 +69,7 @@ void qr(double* a, double* q, int n) {
                     double s;
                     cblas_drotg(&ajj, &aij, &c, &s);
                     cache[i*_b + j] = c;
-                    cache[j*_b + i] = s;
+                    cache[j*_b + i] = -s;
                     cblas_drot(_b-j, &cache[jj], 1, &cache[ij], 1, c, s);
                 }
             }
@@ -88,7 +88,7 @@ void qr(double* a, double* q, int n) {
                     double c;
                     double s;
                     c = cache[i*_b + j];
-                    s = cache[j*_b + i];
+                    s = -cache[j*_b + i];
                     int jrow = 2*_b*_b + j*_b;
                     int irow = 2*_b*_b + i*_b;
                     cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
@@ -104,7 +104,7 @@ void qr(double* a, double* q, int n) {
                         double c;
                         double s;
                         c = cache[i*_b + j];
-                        s = cache[_b*_b + j*_b + i];
+                        s = -cache[_b*_b + j*_b + i];
                         int jrow = 2*_b*_b + j*_b;
                         int irow = 3*_b*_b + i*_b;
                         cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
