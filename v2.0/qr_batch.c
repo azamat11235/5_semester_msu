@@ -108,7 +108,7 @@ void qr_batch(double* a, double* q, int n) {
                 }
                 bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
             }
-            bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
+            bflush(a, n, cache, jb, jb2, 2); // внедиаг. блок
         }
     }
  }
