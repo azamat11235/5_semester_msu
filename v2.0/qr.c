@@ -1,7 +1,6 @@
 #include <cblas.h>
 #include <math.h>
 #include "qr.h"
-#include "qr_batch.h"
 
     
 void qr(double* a, double* q, int n) {
