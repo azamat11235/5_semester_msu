@@ -105,11 +105,9 @@ void qr(double* a, double* q, int n) {
                         double s;
                         c = cache[i*_b + j];
                         s = cache[_b*_b + j*_b + i];
-                        for (int k = 0; k < _b; ++k) {
-                            int jk = 2*_b*_b + j*_b + k;
-                            int ik = 3*_b*_b + i*_b + k;
-                            rotate(&cache[jk], &cache[ik], c, s);
-                        }
+                        int jrow = 2*_b*_b + j*_b;
+                        int irow = 3*_b*_b + i*_b;
+                        cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
                     }
                 }
                 bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
