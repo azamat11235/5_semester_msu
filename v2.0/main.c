@@ -8,6 +8,7 @@
 */
 #include "routine.h"
 
+#include <math.h>
 /////
 void compute_params(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii*aii + aji*aji);
