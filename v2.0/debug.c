@@ -33,7 +33,7 @@ double compute_time(qr_func_type* qr_func, int size) {
     return t / num_of_iters / CLOCKS_PER_SEC;
 }
 
-int test(qr_func_type* f, restore_q_func_type* restore_q_func)  {
+int test(qr_func_type* qr_func, restore_q_func_type* restore_q_func)  {
     int flag = 0;
     const int size = 256;
     const double EPS = 1e-10;
