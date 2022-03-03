@@ -7,9 +7,6 @@
 
 
 int main(int argv, char** argc) {
-    for (int n = 256; n <= 2048; n *= 2)
-        printf("size = %4d, time (qr_batch):   %f s.\n", n,  compute_time(&qr_batch, n));
-    /*
     printf("-------------------------------------------\n");
     printf("tests:\n");
     if (test(&qr, &restore_q) == 0)
@@ -32,6 +29,6 @@ int main(int argv, char** argc) {
     for (int n = 256; n <= 2048; n *= 2)
         printf("size = %4d, time (qr_cblas):   %f s.\n", n, compute_time(&qr_cblas, n));
     printf("-------------------------------\n");
-       */
+    
     return 0;
 }
