@@ -14,8 +14,8 @@ void qr(double* a, double* q, int n) {
         for (int i = j + 1; i < n; ++i) {
             double ajj =  a[j*n + j];
             double aij =  a[i*n + j];
-            double c = aii / sqrt(aii*aii + aji*aji);
-            double s = -aji / sqrt(aii*aii + aji*aji);
+            double c = ajj / sqrt(ajj*aij + aij*aij);
+            double s = -aij / sqrt(ajj*aij + aij*aij);
             q[i*n + j] = c;
             q[j*n + i] = s;
             for (int k = j; k < n; ++k) {
