@@ -12,6 +12,7 @@ void qr_omp(double* a, double* q, int n) {
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
         // вращаем диаг. блок
+	#pragma omp parallel for
         for (int j = 0; j < _b-1; ++j) {
             for (int i = j+1; i < _b; ++i) {
                 int jj = 2*_b*_b + j*_b + j;
