@@ -1,9 +1,10 @@
 #include <math.h>
 #include <cblas.h>
 #include <omp.h>
-#include "qr_omp.h"
-#include "qr.h"
+#include "routine.h"
 #include "parameters.h"
+#include "qr.h"
+#include "qr_omp.h"
 
 
 void qr_omp(double* a, double* q, int n) {
