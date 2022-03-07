@@ -6,12 +6,12 @@
 #include "qr_omp.h"
 
 
-void compute_params(double aii, double aji, double* c, double* s) {
+void compute_params2(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii * aii + aji * aji);
     *s = -aji / sqrt(aii * aii + aji * aji);
 }
 
-void rotate(double* xi, double* xj, double c, double s) {
+void rotate2(double* xi, double* xj, double c, double s) {
     double xi_ = (*xi) * c - (*xj) * s;
     double xj_ = (*xi) * s + (*xj) * c;
     *xi = xi_;
@@ -29,13 +29,13 @@ void qr_omp(double* a, double* q, int n) {
                 double aij = cache[2*_b*_b + i*_b + j];
                 double c;
                 double s;
-                compute_params(ajj, aij, &c, &s);
+                compute_params2(ajj, aij, &c, &s);
                 cache[i*_b + j] = c;
                 cache[j*_b + i] = s;
                 for (int k = j; k < _b; ++k) {
                     int jk = 2*_b*_b + j*_b + k;
                     int ik = 2*_b*_b + i*_b + k;
-                    rotate(&cache[jk], &cache[ik], c, s);
+                    rotate2(&cache[jk], &cache[ik], c, s);
                 }
 
             }
@@ -50,13 +50,13 @@ void qr_omp(double* a, double* q, int n) {
                     double aij = cache[3*_b*_b + i*_b + j];
                     double c;
                     double s;
-                    compute_params(ajj, aij, &c, &s);
+                    compute_params2(ajj, aij, &c, &s);
                     cache[i*_b + j] = c;
                     cache[_b*_b + j*_b + i] = s;
                     for (int k = j; k < _b; ++k) {
                        int jk = 2*_b*_b + j*_b + k;
                        int ik = 3*_b*_b + i*_b + k;
-                       rotate(&cache[jk], &cache[ik], c, s);
+                       rotate2(&cache[jk], &cache[ik], c, s);
                     }
                 }
             }
@@ -79,7 +79,7 @@ void qr_omp(double* a, double* q, int n) {
                     for (int k = 0; k < _b; ++k) {
                         int jk = 2*_b*_b + j*_b + k;
                         int ik = 2*_b*_b + i*_b + k;
-                        rotate(&cache[jk], &cache[ik], c, s);
+                        rotate2(&cache[jk], &cache[ik], c, s);
                     }
                 }
             }
@@ -97,7 +97,7 @@ void qr_omp(double* a, double* q, int n) {
                         for (int k = 0; k < _b; ++k) {
                             int jk = 2*_b*_b + j*_b + k;
                             int ik = 3*_b*_b + i*_b + k;
-                            rotate(&cache[jk], &cache[ik], c, s);
+                            rotate2(&cache[jk], &cache[ik], c, s);
                         }
                     }
                 }
