@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 #include "routine.h"
 #include "debug.h"
 #include "qr.h"
@@ -16,17 +16,19 @@ double compute_time(qr_func_type* qr_func, int size) {
     allocMatrix(&q, size);
     allocMatrix(&matrix, size);
     for (int i = 0; i < num_of_iters; ++i) {
-        clock_t start;
-        clock_t end;
+        double start;
+        double end;
         fillMatrix(matrix, size);
-        start = clock();
+//	printf("-->\n"); /////
+        start = omp_get_wtime();
         (*qr_func)(matrix, q, size);
-        end = clock();
+//	printf("--<\n"); ////
+        end = omp_get_wtime();
         t += end - start;
     }
     free(matrix);
     free(q);
-    return t / num_of_iters / CLOCKS_PER_SEC;
+    return t / num_of_iters;
 }
 
 int test(qr_func_type* qr_func) {

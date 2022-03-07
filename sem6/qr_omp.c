@@ -53,7 +53,7 @@ void qr_omp(double* a, double* q, int n) {
                     compute_params2(ajj, aij, &c, &s);
                     cache[i*_b + j] = c;
                     cache[_b*_b + j*_b + i] = s;
-                    for (int k = j; k < _b; ++k) {
+		    for (int k = j; k < _b; ++k) {
                        int jk = 2*_b*_b + j*_b + k;
                        int ik = 3*_b*_b + i*_b + k;
                        rotate2(&cache[jk], &cache[ik], c, s);
