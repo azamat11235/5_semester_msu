@@ -7,7 +7,6 @@
 
 
 void qr_omp(double* a, double* q, int n) {
-void qr(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
