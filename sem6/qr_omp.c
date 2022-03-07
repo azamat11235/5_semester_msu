@@ -69,11 +69,12 @@ void qr_omp(double* a, double* q, int n) {
                     bflush(a, n, cache, ib, jb, 3); // поддиаг. блок
                 }
                 bflush(a, n, cache, jb, jb, 2); // диаг. блок
+		printf("%d of %d | section 0 | jb %d\n", omp_get_thread_num(), omp_get_num_threads(), jb); 
             }
             #pragma omp section
             {
                 // обновляем строку (блоки справа от диаг.)
-                #pragma omp parallel
+                #pragma omp parallel private(cache) num_threads(2)
                 {
                     #pragma omp for
                     for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
@@ -112,10 +113,11 @@ void qr_omp(double* a, double* q, int n) {
                                 }
                             }
                             bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
-                        }
+			}
+			bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
                     }
-                    bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
-                }
+		}
+		printf("%d of %d | section 1 | jb %d\n", omp_get_thread_num(), omp_get_num_threads(), jb);
             }
         }
     }
