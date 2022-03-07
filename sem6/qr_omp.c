@@ -70,7 +70,7 @@ void qr_omp(double* a, double* q, int n) {
                 }
                 bflush(a, n, cache, jb, jb, 2); // диаг. блок
             }
-           // #pragma omp section
+            #pragma omp section
             {
                 // обновляем строку (блоки справа от диаг.)
                 #pragma omp parallel for num_threads(2) private(cache)
