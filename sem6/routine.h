@@ -1,8 +1,7 @@
 #ifndef _ROUTINE_
 #define _ROUTINE_
 
-void compute_params(double aii, double aji, double* c, double* s);  //
-void rotate(double* xi, double* xj, double c, double s);            //
+
 void bcache(double* a, int na, double* cache, int i, int j, int k); //
 void bflush(double* a, int na, double* cache, int i, int j, int k); //
 void allocMatrix(double** matrix, int n);
