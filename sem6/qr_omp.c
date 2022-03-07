@@ -3,11 +3,11 @@
 #include <omp.h>
 #include "routine.h"
 #include "parameters.h"
-#include "qr.h"
 #include "qr_omp.h"
 
 
 void qr_omp(double* a, double* q, int n) {
+void qr(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
@@ -49,41 +49,46 @@ void qr_omp(double* a, double* q, int n) {
             bflush(a, n, cache, ib, jb, 3); // поддиаг. блок
         }
         bflush(a, n, cache, jb, jb, 2); // диаг. блок
-        // обновляем строку (блоки справа от диаг.)
-        for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
-            bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
-            bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
-            // вращения диаг. блока
-            for (int j = 0; j < _b-1; ++j) {
-                for (int i = j+1; i < _b; ++i) {
-                    double c;
-                    double s;
-                    c =  cache[i*_b + j];
-                    s = -cache[j*_b + i];
-                    int jrow = 2*_b*_b + j*_b;
-                    int irow = 2*_b*_b + i*_b;
-                    cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
-                }
-            }
-            // вращения поддиаг. блоков
-            for (int ib = jb+_b; ib < n; ib += _b) {
-                bcache(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
-                bcache(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
-                bcache(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
-                for (int j = 0; j < _b; ++j) {
-                    for (int i = 0; i < _b; ++i) {
+
+        #pragma omp parallel num_threads(4)
+        {
+            // обновляем строку (блоки справа от диаг.)
+            #pragma omp for private(cache)
+            for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
+                bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
+                bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
+                // вращения диаг. блока
+                for (int j = 0; j < _b-1; ++j) {
+                    for (int i = j+1; i < _b; ++i) {
                         double c;
                         double s;
-                        c = cache[i*_b + j];
-                        s = -cache[_b*_b + j*_b + i];
+                        c =  cache[i*_b + j];
+                        s = -cache[j*_b + i];
                         int jrow = 2*_b*_b + j*_b;
-                        int irow = 3*_b*_b + i*_b;
+                        int irow = 2*_b*_b + i*_b;
                         cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
                     }
                 }
-                bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                // вращения поддиаг. блоков
+                for (int ib = jb+_b; ib < n; ib += _b) {
+                    bcache(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                    bcache(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
+                    bcache(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
+                    for (int j = 0; j < _b; ++j) {
+                        for (int i = 0; i < _b; ++i) {
+                            double c;
+                            double s;
+                            c = cache[i*_b + j];
+                            s = -cache[_b*_b + j*_b + i];
+                            int jrow = 2*_b*_b + j*_b;
+                            int irow = 3*_b*_b + i*_b;
+                            cblas_drot(_b, &cache[jrow], 1, &cache[irow], 1, c, s);
+                        }
+                    }
+                    bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                }
+                bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
             }
-            bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
         }
     }
  }
