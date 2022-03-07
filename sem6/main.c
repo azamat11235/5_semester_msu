@@ -15,7 +15,7 @@ int main() {
     
     for (int n = 256; n <= 2048; n *= 2)
         printf("size = %4d, time = %f\n", n, compute_time(qr_omp, n));
-    prinf(LINE);
+    printf(LINE);
     for (int n = 256; n <= 2048; n *= 2)
         printf("size = %4d, time = %f\n", n, compute_time(qr, n));
     return 0;
