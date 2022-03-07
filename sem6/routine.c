@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include "parameters.h"
 #include "routine.h"
 
 
