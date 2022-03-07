@@ -1,7 +1,7 @@
 #ifndef _ROUTINE_
 #define _ROUTINE_
 
-
+void restore_q(double* q, double* restored_q, int n);
 void bcache(double* a, int na, double* cache, int i, int j, int k); //
 void bflush(double* a, int na, double* cache, int i, int j, int k); //
 void allocMatrix(double** matrix, int n);
