@@ -1,9 +1,8 @@
 #include <math.h>
-#include <cblas.h>
+// #include <cblas.h>
 #include <omp.h>
 #include "routine.h"
 #include "parameters.h"
-#include "qr.h"
 #include "qr_omp.h"
 
 
