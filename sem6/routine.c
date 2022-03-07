@@ -5,6 +5,28 @@
 #include "routine.h"
 
 
+void restore_q(double* q, double* restored_q, int n) {
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            restored_q[n * i + j] = (double)(i == j);
+     for (int jb = n - 1; jb >= 0; jb -= _b) {
+        for (int ib = n - 1; ib >= 0; ib -= _b) {
+            for (int j = 0; j < _b; ++j) {
+                for (int i = 0; i < _b; ++i) {
+                    int row_abs = ib - i;
+                    int col_abs = jb - j;
+                    if (row_abs > col_abs) {
+                        double c = q[row_abs*n + col_abs];
+                        double s = -q[col_abs*n + row_abs];
+                        for (int k = 0; k < n; ++k)
+                            rotate(&restored_q[col_abs*n + k], &restored_q[row_abs*n + k], c, s);
+                    }
+                }
+            }
+         }
+     }
+}
+
 void compute_params(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii * aii + aji * aji);
     *s = -aji / sqrt(aii * aii + aji * aji);
