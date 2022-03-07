@@ -1,6 +1,6 @@
 #ifndef _PARAMETERS_
 #define _PARAMETERS_
 
-#define _b 32
+#define _b 64
 
 #endif
