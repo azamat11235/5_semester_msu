@@ -1,4 +1,5 @@
 #include <math.h>
+#include <cblas.h>
 #include <omp.h>
 #include "qr_omp.h"
 #include "qr.h"
