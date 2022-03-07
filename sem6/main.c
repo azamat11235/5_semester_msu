@@ -4,7 +4,7 @@
 #include "qr_omp.h"
 
 
-#define LINE "------------------------------"
+#define LINE "------------------------------\n"
 
 int main() {
     if (test(qr) == 0)
