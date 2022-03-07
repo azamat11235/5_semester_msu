@@ -5,6 +5,26 @@
 #include "qr_omp.h"
 
 
+void bcache2(double* a, int na, double* cache, int i, int j, int k) {
+    for (int ii = 0; ii < _b; ++ii) {
+            int row_abs = i + ii;
+            for (int jj = 0; jj < _b; ++jj) {
+                int col_abs = j + jj;
+                cache[k*_b*_b + ii*_b + jj] = a[row_abs*na + col_abs];
+            }
+        }
+}
+
+void bflush2(double* a, int na, double* cache, int i, int j, int k) {
+    for (int ii = 0; ii < _b; ++ii) {
+            int row_abs = i + ii;
+            for (int jj = 0; jj < _b; ++jj) {
+                int col_abs = j + jj;
+                a[row_abs*na + col_abs] = cache[k*_b*_b + ii*_b + jj];
+            }
+        }
+}
+
 void compute_params2(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii * aii + aji * aji);
     *s = -aji / sqrt(aii * aii + aji * aji);
@@ -20,7 +40,7 @@ void rotate2(double* xi, double* xj, double c, double s) {
 void qr_omp(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
-        bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
+        bcache2(a, n, cache, jb, jb, 2); // кешируем диаг. блок
         // вращаем диаг. блок
         for (int j = 0; j < _b-1; ++j) {
             for (int i = j+1; i < _b; ++i) {
@@ -39,10 +59,10 @@ void qr_omp(double* a, double* q, int n) {
 
             }
         }
-        bflush(q, n, cache, jb, jb, 0); // sin, cos
+        bflush2(q, n, cache, jb, jb, 0); // sin, cos
         // вращаем столбец (поддиаг. блоки)
         for (int ib = jb+_b; ib < n; ib += _b) {
-            bcache(a, n, cache, ib, jb, 3); // поддиаг. блок
+            bcache2(a, n, cache, ib, jb, 3); // поддиаг. блок
             for (int j = 0; j < _b; ++j) {
                 for (int i = 0; i < _b; ++i) {
                     double ajj = cache[2*_b*_b + j*_b + j];
@@ -59,16 +79,16 @@ void qr_omp(double* a, double* q, int n) {
                     }
                 }
             }
-            bflush(q, n, cache, ib, jb, 0); // cos
-            bflush(q, n, cache, jb, ib, 1); // sin
-            bflush(a, n, cache, ib, jb, 3); // поддиаг. блок
+            bflush2(q, n, cache, ib, jb, 0); // cos
+            bflush2(q, n, cache, jb, ib, 1); // sin
+            bflush2(a, n, cache, ib, jb, 3); // поддиаг. блок
         }
-        bflush(a, n, cache, jb, jb, 2); // диаг. блок
+        bflush2(a, n, cache, jb, jb, 2); // диаг. блок
         // обновляем строку (блоки справа от диаг.)
 #pragma omp parallel for num_threads(2) private(cache)
 	for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
-            bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
-            bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
+            bcache2(a, n, cache, jb, jb2, 2); // внедиаг. блок
+            bcache2(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
             // вращения диаг. блока
             for (int j = 0; j < _b-1; ++j) {
                 for (int i = j+1; i < _b; ++i) {
@@ -85,9 +105,9 @@ void qr_omp(double* a, double* q, int n) {
             }
             // вращения поддиаг. блоков
             for (int ib = jb+_b; ib < n; ib += _b) {
-                bcache(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
-                bcache(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
-                bcache(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
+                bcache2(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                bcache2(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
+                bcache2(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
                 for (int j = 0; j < _b; ++j) {
                     for (int i = 0; i < _b; ++i) {
                         double c;
@@ -101,9 +121,9 @@ void qr_omp(double* a, double* q, int n) {
                         }
                     }
                 }
-                bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                bflush2(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
             }
-            bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
+            bflush2(a, n, cache, jb, jb2, 2); // недиаг. блок
         }
     }
 }
