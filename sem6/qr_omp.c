@@ -20,7 +20,7 @@ void rotate2(double* xi, double* xj, double c, double s) {
 void qr_omp(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
-        omp_set_nested(0);
+        //omp_set_nested(0);
         #pragma omp parallel sections private(cache) num_threads(2)
         {
             #pragma omp section
