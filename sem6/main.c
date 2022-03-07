@@ -7,6 +7,7 @@
 #define LINE "--------------------------------\n"
 
 int main() {
+    printf(LINE);
     if (test(qr_omp) == 0)
         printf("test (qr_omp): OK\n");
     if (test(qr) == 0)
