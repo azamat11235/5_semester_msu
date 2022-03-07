@@ -17,26 +17,6 @@ void rotate(double* xi, double* xj, double c, double s) {
     *xj = xj_;
 }
 
-void bcache(double* a, int na, double* cache, int i, int j, int k) {
-    for (int ii = 0; ii < _b; ++ii) {
-            int row_abs = i + ii;
-            for (int jj = 0; jj < _b; ++jj) {
-                int col_abs = j + jj;
-                cache[k*_b*_b + ii*_b + jj] = a[row_abs*na + col_abs];
-            }
-        }
-}
-
-void bflush(double* a, int na, double* cache, int i, int j, int k) {
-    for (int ii = 0; ii < _b; ++ii) {
-            int row_abs = i + ii;
-            for (int jj = 0; jj < _b; ++jj) {
-                int col_abs = j + jj;
-                a[row_abs*na + col_abs] = cache[k*_b*_b + ii*_b + jj];
-            }
-        }
-}
-
 void qr(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
     for (int jb = 0; jb < n; jb += _b) {
