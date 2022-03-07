@@ -19,7 +19,6 @@ void rotate2(double* xi, double* xj, double c, double s) {
 
 void qr_omp(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
-    omp_set_num_threads(120);//
     for (int jb = 0; jb < n; jb += _b) {
         bcache(a, n, cache, jb, jb, 2); // кешируем диаг. блок
         // вращаем диаг. блок
@@ -66,7 +65,7 @@ void qr_omp(double* a, double* q, int n) {
         }
         bflush(a, n, cache, jb, jb, 2); // диаг. блок
 
-        #pragma omp parallel //num_threads(4)
+        #pragma omp parallel num_threads(120)//num_threads(4)
         {
             // обновляем строку (блоки справа от диаг.)
             #pragma omp for private(cache)
