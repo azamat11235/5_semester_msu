@@ -1,5 +1,6 @@
 #include <math.h>
 #include <cblas.h>
+#include "routine.h"
 #include "qr.h"
 #include "parameters.h"
 
@@ -104,3 +105,4 @@ void restore_q(double* q, double* restored_q, int n) {
             }
          }
      }
+}
