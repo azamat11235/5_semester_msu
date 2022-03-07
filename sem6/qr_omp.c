@@ -68,7 +68,7 @@ void qr_omp(double* a, double* q, int n) {
         #pragma omp parallel num_threads(4)
         {
             // обновляем строку (блоки справа от диаг.)
-            #pragma omp for
+            #pragma omp for private(cache)
             for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
                 bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
                 bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
