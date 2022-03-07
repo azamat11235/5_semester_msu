@@ -56,7 +56,7 @@ void qr_omp(double* a, double* q, int n) {
                             compute_params2(ajj, aij, &c, &s);
                             cache[i*_b + j] = c;
                             cache[_b*_b + j*_b + i] = s;
-        		    for (int k = j; k < _b; ++k) {
+                    for (int k = j; k < _b; ++k) {
                                int jk = 2*_b*_b + j*_b + k;
                                int ik = 3*_b*_b + i*_b + k;
                                rotate2(&cache[jk], &cache[ik], c, s);
@@ -71,47 +71,46 @@ void qr_omp(double* a, double* q, int n) {
             }
             #pragma omp section
             {
-                    // обновляем строку (блоки справа от диаг.)
+                // обновляем строку (блоки справа от диаг.)
                 #pragma omp parallel for num_threads(2) private(cache)
-            	for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
-                        bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
-                        bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
-                        // вращения диаг. блока
-                        for (int j = 0; j < _b-1; ++j) {
-                            for (int i = j+1; i < _b; ++i) {
+                for (int jb2 = jb+_b; jb2 < n; jb2 += _b) {
+                    bcache(a, n, cache, jb, jb2, 2); // внедиаг. блок
+                    bcache(q, n, cache, jb, jb, 0);  // cos, sin диаг. блока
+                    // вращения диаг. блока
+                    for (int j = 0; j < _b-1; ++j) {
+                        for (int i = j+1; i < _b; ++i) {
+                            double c;
+                            double s;
+                            c = cache[i*_b + j];
+                            s = cache[j*_b + i];
+                            for (int k = 0; k < _b; ++k) {
+                                int jk = 2*_b*_b + j*_b + k;
+                                int ik = 2*_b*_b + i*_b + k;
+                                rotate2(&cache[jk], &cache[ik], c, s);
+                            }
+                        }
+                    }
+                    // вращения поддиаг. блоков
+                    for (int ib = jb+_b; ib < n; ib += _b) {
+                        bcache(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
+                        bcache(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
+                        bcache(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
+                        for (int j = 0; j < _b; ++j) {
+                            for (int i = 0; i < _b; ++i) {
                                 double c;
                                 double s;
                                 c = cache[i*_b + j];
-                                s = cache[j*_b + i];
+                                s = cache[_b*_b + j*_b + i];
                                 for (int k = 0; k < _b; ++k) {
                                     int jk = 2*_b*_b + j*_b + k;
-                                    int ik = 2*_b*_b + i*_b + k;
+                                    int ik = 3*_b*_b + i*_b + k;
                                     rotate2(&cache[jk], &cache[ik], c, s);
                                 }
                             }
                         }
-                        // вращения поддиаг. блоков
-                        for (int ib = jb+_b; ib < n; ib += _b) {
-                            bcache(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
-                            bcache(q, n, cache, ib, jb, 0);  // cos поддиаг. блока
-                            bcache(q, n, cache, jb, ib, 1);  // sin поддиаг. блока
-                            for (int j = 0; j < _b; ++j) {
-                                for (int i = 0; i < _b; ++i) {
-                                    double c;
-                                    double s;
-                                    c = cache[i*_b + j];
-                                    s = cache[_b*_b + j*_b + i];
-                                    for (int k = 0; k < _b; ++k) {
-                                        int jk = 2*_b*_b + j*_b + k;
-                                        int ik = 3*_b*_b + i*_b + k;
-                                        rotate2(&cache[jk], &cache[ik], c, s);
-                                    }
-                                }
-                            }
-                            bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
-                        }
-                        bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
+                        bflush(a, n, cache, ib, jb2, 3); // внедиаг. блок (нижний)
                     }
+                    bflush(a, n, cache, jb, jb2, 2); // недиаг. блок
                 }
             }
         }
