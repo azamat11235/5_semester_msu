@@ -4,7 +4,7 @@
 #include "qr.h"
 #include "parameters.h"
 
-/*
+
 void compute_params(double aii, double aji, double* c, double* s) {
     *c = aii / sqrt(aii * aii + aji * aji);
     *s = -aji / sqrt(aii * aii + aji * aji);
@@ -16,7 +16,6 @@ void rotate(double* xi, double* xj, double c, double s) {
     *xi = xi_;
     *xj = xj_;
 }
-*/
 
 void qr(double* a, double* q, int n) {
     double cache[4*_b*_b] = {0};
