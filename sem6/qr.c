@@ -1,5 +1,4 @@
 #include <math.h>
-// #include <cblas.h> //
 #include "routine.h"
 #include "qr.h"
 #include "parameters.h"
