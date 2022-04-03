@@ -1,6 +1,6 @@
 qr.c         - наивная реализация алгоритма
 
-qr_batches.c - блочная версия
+qr_batch.c - блочная версия
 
 qr_cblas.c   - CBLAS
 
